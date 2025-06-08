@@ -36,6 +36,8 @@ This system represents a complete institutional-quality trading platform that dy
 - **Performance Visualization**: Equity curves and drawdown analysis
 - **Risk Metrics**: Real-time risk monitoring
 - **Trade Analytics**: Detailed trade performance analysis
+  
+<img width="366" alt="Screenshot 2025-06-08 at 23 24 31" src="https://github.com/user-attachments/assets/126b9ce0-baa4-4b2a-9616-6dde9e63e2dd" />
 
 ## 📊 Quick Start
 
