@@ -1,3 +1,4 @@
+import { Logger } from "../utils/logger"
 import { MathHelpers } from "../utils/math-helpers"
 import { StatisticalUtils } from "../utils/statistics"
 import type { PerformanceMetrics, RegimeMetrics, Trade, EquityPoint, BacktestConfiguration } from "./types"

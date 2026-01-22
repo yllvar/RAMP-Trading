@@ -4,6 +4,7 @@
 import WebSocket from "isomorphic-ws"
 import axios from "axios"
 import crypto from "crypto"
+import { Logger } from "../utils/logger"
 
 export interface ExchangeCredentials {
   apiKey: string
@@ -218,7 +219,7 @@ export class BinanceConnector extends ExchangeConnector {
       if (response.status === 200) {
         this.isConnected = true
         this.setupHeartbeat()
-        console.log("Connected to Binance")
+        Logger.info('Connected to Binance')
         return true
       }
       return false
@@ -244,7 +245,7 @@ export class BinanceConnector extends ExchangeConnector {
     }
 
     this.isConnected = false
-    console.log("Disconnected from Binance")
+    Logger.info('Disconnected from Binance')
   }
 
   /**
@@ -453,7 +454,7 @@ export class BinanceConnector extends ExchangeConnector {
    */
   async subscribeUserData(handler: DataHandler): Promise<boolean> {
     if (!this.credentials) {
-      console.error("API credentials required for user data subscription")
+      Logger.info('API credentials required for user data subscription')
       return false
     }
 
@@ -479,7 +480,7 @@ export class BinanceConnector extends ExchangeConnector {
       const ws = new WebSocket(`${this.baseWsUrl}/${listenKey}`)
 
       ws.onopen = () => {
-        console.log("User data stream connected")
+        Logger.info('User data stream connected')
       }
 
       ws.onmessage = (event) => {
@@ -532,13 +533,13 @@ export class BinanceConnector extends ExchangeConnector {
       }
 
       ws.onclose = () => {
-        console.log("User data stream closed")
+        Logger.info('User data stream closed')
         this.wsConnections.delete(channel)
 
         // Attempt to reconnect after a delay
         setTimeout(() => {
           if (this.isConnected) {
-            console.log("Attempting to reconnect user data stream")
+            Logger.info('Attempting to reconnect user data stream')
             this.subscribeUserData(handler)
           }
         }, 5000)
@@ -559,7 +560,7 @@ export class BinanceConnector extends ExchangeConnector {
                 },
               },
             )
-            console.log("Listen key extended")
+            Logger.info('Listen key extended')
           } catch (error) {
             console.error("Failed to extend listen key:", error)
           }

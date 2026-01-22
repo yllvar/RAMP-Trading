@@ -1,3 +1,4 @@
+import { Logger } from "../utils/logger"
 /**
  * Machine learning-based parameter optimization
  */
@@ -196,7 +197,7 @@ export class GeneticOptimizer extends Optimizer {
    * Run genetic algorithm optimization
    */
   async optimize(): Promise<OptimizationResult> {
-    console.log("Starting genetic algorithm optimization...")
+    Logger.info('Starting genetic algorithm optimization...')
 
     // Initialize population
     let population = await this.initializePopulation()
@@ -524,7 +525,7 @@ export class BayesianOptimizer extends Optimizer {
    * Run Bayesian optimization
    */
   async optimize(): Promise<OptimizationResult> {
-    console.log("Starting Bayesian optimization...")
+    Logger.info('Starting Bayesian optimization...')
 
     const allResults: Array<{
       parameters: { [param: string]: number | string }
@@ -537,7 +538,7 @@ export class BayesianOptimizer extends Optimizer {
     let bestResult = { score: Number.NEGATIVE_INFINITY, parameters: {}, metrics: {} }
 
     // Initial random sampling
-    console.log("Initial random sampling...")
+    Logger.info('Initial random sampling...')
     for (let i = 0; i < this.initialSamples; i++) {
       const parameters = this.generateRandomParameters()
       const evaluation = await this.evaluateParameters(parameters)

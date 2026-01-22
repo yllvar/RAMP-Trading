@@ -1,3 +1,4 @@
+import { Logger } from "../utils/logger"
 /**
  * Multi-pair trading management system
  */

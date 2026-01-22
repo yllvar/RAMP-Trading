@@ -1,3 +1,4 @@
+import { Logger } from "../utils/logger"
 "use client"
 
 import { useState, useEffect } from "react"

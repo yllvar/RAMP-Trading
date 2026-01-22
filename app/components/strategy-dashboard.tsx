@@ -1,3 +1,4 @@
+import { Logger } from "../utils/logger"
 "use client"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"

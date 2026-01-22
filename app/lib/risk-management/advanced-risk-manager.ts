@@ -1,3 +1,4 @@
+import { Logger } from "../utils/logger"
 /**
  * Advanced Risk Management System
  * Enterprise-grade risk monitoring and control
@@ -242,7 +243,7 @@ export class AdvancedRiskManager {
    */
   startMonitoring(intervalMs = 5000): void {
     if (this.isMonitoring) {
-      console.log("Risk monitoring already active")
+      Logger.info('Risk monitoring already active')
       return
     }
 
@@ -251,7 +252,7 @@ export class AdvancedRiskManager {
       this.performRiskCheck()
     }, intervalMs)
 
-    console.log("Risk monitoring started")
+    Logger.info('Risk monitoring started')
   }
 
   /**
@@ -263,7 +264,7 @@ export class AdvancedRiskManager {
       this.monitoringInterval = undefined
     }
     this.isMonitoring = false
-    console.log("Risk monitoring stopped")
+    Logger.info('Risk monitoring stopped')
   }
 
   /**
@@ -568,7 +569,7 @@ export class AdvancedRiskManager {
   private performRiskCheck(): void {
     // This would be called with real portfolio and market data
     // For now, we'll simulate the check
-    console.log("Performing risk check...")
+    Logger.info('Performing risk check...')
 
     // In practice, you'd get current portfolio and market data here
     // const portfolio = getCurrentPortfolio()

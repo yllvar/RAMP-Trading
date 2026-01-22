@@ -1,3 +1,4 @@
+import { Logger } from "../utils/logger"
 import type { Metadata } from 'next'
 import './globals.css'
 

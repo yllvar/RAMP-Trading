@@ -1,3 +1,4 @@
+import { Logger } from "../utils/logger"
 /**
  * Types for the backtesting framework
  */

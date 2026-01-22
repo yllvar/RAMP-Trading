@@ -1,3 +1,4 @@
+import { Logger } from "../utils/logger"
 /**
  * Production Operations and Monitoring System
  * Enterprise-grade monitoring, alerting, and operational controls
@@ -240,7 +241,7 @@ export class ProductionMonitoringSystem {
    */
   startMonitoring(): void {
     if (this.isMonitoring) {
-      console.log("Monitoring already active")
+      Logger.info('Monitoring already active')
       return
     }
 
@@ -257,7 +258,7 @@ export class ProductionMonitoringSystem {
       this.performHealthChecks()
     }, this.config.healthCheckFrequency)
 
-    console.log("Production monitoring started")
+    Logger.info('Production monitoring started')
   }
 
   /**
@@ -269,7 +270,7 @@ export class ProductionMonitoringSystem {
       this.monitoringInterval = undefined
     }
     this.isMonitoring = false
-    console.log("Production monitoring stopped")
+    Logger.info('Production monitoring stopped')
   }
 
   /**

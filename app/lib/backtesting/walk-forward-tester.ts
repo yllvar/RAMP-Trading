@@ -1,3 +1,4 @@
+import { Logger } from "../utils/logger"
 import { BacktestingEngine } from "./backtesting-engine"
 import type {
   WalkForwardResult,
@@ -31,7 +32,7 @@ export class WalkForwardTester {
     outOfSampleDays = 63,
     stepSize = 21,
   ): Promise<WalkForwardAnalysis> {
-    console.log("Starting walk-forward analysis...")
+    Logger.info('Starting walk-forward analysis...')
 
     const results: WalkForwardResult[] = []
     const totalDays = marketData.dates.length
@@ -99,7 +100,7 @@ export class WalkForwardTester {
     // Analyze parameter stability
     const parameterStability = this.analyzeParameterStability(results)
 
-    console.log("Walk-forward analysis completed!")
+    Logger.info('Walk-forward analysis completed!')
 
     return {
       results,

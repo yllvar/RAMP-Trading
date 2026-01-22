@@ -1,3 +1,4 @@
+import { Logger } from "../utils/logger"
 import type { Trade } from "./types"
 
 /**

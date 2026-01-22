@@ -1,3 +1,4 @@
+import { Logger } from "../utils/logger"
 /**
  * Cross-Asset Arbitrage System
  * Identifies and executes arbitrage opportunities across different asset classes
@@ -261,7 +262,7 @@ export class CrossAssetArbitrageEngine {
    */
   startScanning(): void {
     if (this.isScanning) {
-      console.log("Arbitrage scanning already active")
+      Logger.info('Arbitrage scanning already active')
       return
     }
 
@@ -270,7 +271,7 @@ export class CrossAssetArbitrageEngine {
       this.scanForOpportunities()
     }, this.config.scanFrequency)
 
-    console.log("Cross-asset arbitrage scanning started")
+    Logger.info('Cross-asset arbitrage scanning started')
   }
 
   /**
@@ -282,7 +283,7 @@ export class CrossAssetArbitrageEngine {
       this.scanningInterval = undefined
     }
     this.isScanning = false
-    console.log("Cross-asset arbitrage scanning stopped")
+    Logger.info('Cross-asset arbitrage scanning stopped')
   }
 
   /**

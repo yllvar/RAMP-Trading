@@ -1,3 +1,4 @@
+import { Logger } from "../utils/logger"
 import { CointegrationTester } from "../strategy-engine/cointegration"
 import { ZScoreCalculator } from "../strategy-engine/zscore-calculator"
 import { SignalGenerator } from "../strategy-engine/signal-generator"
@@ -50,7 +51,7 @@ export class BacktestingEngine {
    */
   async runBacktest(marketData: MarketData): Promise<BacktestResult> {
     try {
-      console.log("Starting comprehensive backtest...")
+      Logger.info('Starting comprehensive backtest...')
 
       // Validate data
       this.validateMarketData(marketData)
@@ -65,7 +66,7 @@ export class BacktestingEngine {
       )
 
       if (!cointegrationResult.isCointegrated) {
-        console.warn("Warning: Pair is not cointegrated. Results may be unreliable.")
+        Logger.warn('Warning: Pair is not cointegrated. Results may be unreliable.')
       }
 
       // Calculate spread and z-scores
@@ -106,7 +107,7 @@ export class BacktestingEngine {
       // Identify drawdown periods
       const drawdownPeriods = this.identifyDrawdownPeriods()
 
-      console.log("Backtest completed successfully!")
+      Logger.info('Backtest completed successfully!')
 
       return {
         configuration: this.config,

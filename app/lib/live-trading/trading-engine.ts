@@ -1,3 +1,4 @@
+import { Logger } from "../utils/logger"
 /**
  * Trading execution engine for live trading
  */
@@ -15,12 +16,10 @@ import { CointegrationTester } from "../strategy-engine/cointegration"
 import { ZScoreCalculator } from "../strategy-engine/zscore-calculator"
 import { StatisticalUtils } from "../utils/statistics"
 import { EventEmitter } from "events"
+import { config } from "../config/environment"
 
 export interface TradingEngineConfig {
   exchange: string
-  apiKey?: string
-  apiSecret?: string
-  testMode?: boolean
   symbols: string[]
   baseCurrency: string
   quoteCurrency: string
@@ -178,16 +177,16 @@ export class TradingEngine extends EventEmitter {
    */
   async start(): Promise<boolean> {
     if (this.isRunning) {
-      console.log("Trading engine already running")
+      Logger.info('\'Trading engine already running\'')
       return true
     }
 
     try {
       // Create exchange connector
       this.connector = ExchangeConnectorFactory.createConnector(this.config.exchange, {
-        apiKey: this.config.apiKey,
-        apiSecret: this.config.apiSecret,
-        testMode: this.config.testMode,
+        apiKey: config.exchange.apiKey,
+        apiSecret: config.exchange.apiSecret,
+        testMode: config.exchange.testMode,
       })
 
       // Connect to exchange
@@ -205,7 +204,7 @@ export class TradingEngine extends EventEmitter {
       }
 
       // Subscribe to user data if API credentials provided
-      if (this.config.apiKey && this.config.apiSecret) {
+      if (config.exchange.apiKey && config.exchange.apiSecret) {
         await this.connector.subscribeUserData(this.handleUserData.bind(this))
 
         // Get initial balances
@@ -222,7 +221,7 @@ export class TradingEngine extends EventEmitter {
       this.isRunning = true
       this.emit("started")
 
-      console.log("Trading engine started")
+      Logger.info('Trading engine started')
       return true
     } catch (error) {
       this.lastError = `Failed to start trading engine: ${error instanceof Error ? error.message : "Unknown error"}`
@@ -236,7 +235,7 @@ export class TradingEngine extends EventEmitter {
    */
   async stop(): Promise<boolean> {
     if (!this.isRunning) {
-      console.log("Trading engine not running")
+      Logger.info('Trading engine not running')
       return true
     }
 
@@ -253,7 +252,7 @@ export class TradingEngine extends EventEmitter {
       this.isConnected = false
       this.emit("stopped")
 
-      console.log("Trading engine stopped")
+      Logger.info('Trading engine stopped')
       return true
     } catch (error) {
       this.lastError = `Failed to stop trading engine: ${error instanceof Error ? error.message : "Unknown error"}`
@@ -599,7 +598,7 @@ export class TradingEngine extends EventEmitter {
    */
   private async executeTrade(signal: any, positionSize: any): Promise<void> {
     if (!this.connector) {
-      console.error("Exchange connector not initialized")
+      Logger.info('Exchange connector not initialized')
       return
     }
 
@@ -704,7 +703,7 @@ export class TradingEngine extends EventEmitter {
    */
   private async closePosition(position: Position, reason: string): Promise<void> {
     if (!this.connector) {
-      console.error("Exchange connector not initialized")
+      Logger.info('Exchange connector not initialized')
       return
     }
 
@@ -814,7 +813,7 @@ export class TradingEngine extends EventEmitter {
    */
   private async loadHistoricalData(): Promise<void> {
     if (!this.connector) {
-      console.error("Exchange connector not initialized")
+      Logger.info('Exchange connector not initialized')
       return
     }
 
@@ -850,7 +849,7 @@ export class TradingEngine extends EventEmitter {
       // Analyze initial market state
       this.analyzeMarketState()
 
-      console.log("Historical data loaded")
+      Logger.info('Historical data loaded')
     } catch (error) {
       console.error("Error loading historical data:", error)
       this.lastError = `Failed to load historical data: ${error instanceof Error ? error.message : "Unknown error"}`

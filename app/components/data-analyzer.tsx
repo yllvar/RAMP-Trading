@@ -1,5 +1,7 @@
 "use client"
 
+import { Logger } from "../lib/utils/logger"
+
 import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -140,11 +142,11 @@ export default function DataAnalyzer() {
       const xrpPricesTrimmed = xrpPrices.slice(0, minLength)
 
       // REAL COINTEGRATION TESTING
-      console.log("Running Engle-Granger cointegration test...")
+      Logger.info('Running Engle-Granger cointegration test...')
       const cointegrationResult = CointegrationTester.performEngleGrangerTest(btcPricesTrimmed, xrpPricesTrimmed)
 
       // REAL Z-SCORE CALCULATION
-      console.log("Calculating spread and z-scores...")
+      Logger.info('Calculating spread and z-scores...')
       const spread = ZScoreCalculator.calculateSpread(
         btcPricesTrimmed,
         xrpPricesTrimmed,

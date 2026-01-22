@@ -1,3 +1,4 @@
+import { Logger } from "../utils/logger"
 export interface SentimentData {
   timestamp: Date
   source: string
@@ -749,7 +750,7 @@ export class AlternativeDataIntegrator {
           await this.collectSentimentData(assets)
           await this.collectOnChainMetrics(assets)
           await this.collectNewsEvents(assets)
-          console.log("Alternative data collection completed")
+          Logger.info('Alternative data collection completed')
         } catch (error) {
           console.error("Error in data collection:", error)
         }
@@ -763,6 +764,6 @@ export class AlternativeDataIntegrator {
    */
   stopDataCollection(): void {
     // In a real implementation, you'd store interval IDs and clear them
-    console.log("Data collection stopped")
+    Logger.info('Data collection stopped')
   }
 }

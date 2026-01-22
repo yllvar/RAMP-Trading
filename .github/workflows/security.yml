@@ -1,0 +1,75 @@
+name: Security Check
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'
+        
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 8
+        
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+      
+    - name: Run security audit
+      run: pnpm audit --audit-level=high
+      
+    - name: Check for outdated dependencies
+      run: pnpm outdated || true
+      
+    - name: Build application
+      run: pnpm run build
+      
+    - name: Check for hardcoded secrets
+      run: |
+        echo "Checking for hardcoded secrets..."
+        # Check for common secret patterns
+        if grep -r -i "api_key\|api_secret\|password\|token\|secret" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" app/ | grep -v "config\|environment\|example"; then
+          echo "❌ Hardcoded secrets found!"
+          exit 1
+        else
+          echo "✅ No hardcoded secrets found"
+        fi
+        
+    - name: Validate environment configuration
+      run: |
+        echo "Validating environment configuration..."
+        # Check if .env.example exists
+        if [ ! -f .env.example ]; then
+          echo "❌ .env.example file missing"
+          exit 1
+        fi
+        echo "✅ Environment configuration validated"
+
+  license-check:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Check license compliance
+      run: |
+        echo "Checking license compliance..."
+        # Check for prohibited licenses
+        npx license-checker --onlyAllow 'MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC' || true
